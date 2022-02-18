@@ -1,6 +1,7 @@
 package com.uniovi.notaneitor.services;
 
 import com.uniovi.notaneitor.entities.Teacher;
+import com.uniovi.notaneitor.repositories.TeachersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,59 +12,35 @@ import java.util.List;
 @Service
 public class TeachersService {
 
-    private List<Teacher> teachers = new ArrayList<>();
-
-    @PostConstruct
-    public void init() {
-        teachers.add(new Teacher(1L,"111",
-                "Carlos",
-                "Garriga Suárez", "Maths"));
-        teachers.add(new Teacher(2L,"222",
-                "Diego",
-                "Martín Fernández", "History"));
-        teachers.add(new Teacher(3L, "333",
-                "Carmen",
-                "Argüelles Villalba", "Marketing"));
-
-    }
+    @Autowired
+    private TeachersRepository teachersRepository;
 
     public void addTeacher(Teacher teacher)
     {
-        teachers.add(teacher);
+        teachersRepository.save(teacher);
     }
 
     public Teacher getTeacher(Long id) {
-        for (Teacher t: teachers) {
-            if(t.getId().equals(id)) {
-                return t;
-            }
-        }
-        return null;
+        return teachersRepository.findById(id).get();
     }
 
     public List<Teacher> getTeachers() {
-        return this.teachers;
+        List<Teacher> teachers = new ArrayList<>();
+        teachersRepository.findAll().forEach(teachers::add);
+        return teachers;
     }
 
     public void deleteTeacher(Long id) {
-        for (Teacher t: teachers) {
-            if(t.getId().equals(id)) {
-                teachers.remove(t);
-            }
-        }
+        teachersRepository.deleteById(id);
     }
 
     public void editTeacher(Long id, Teacher teacher) {
-        for(Teacher t: teachers) {
-            if(t.getId().equals(id)) {
-                t.setName(teacher.getName());
-                t.setCategory(teacher.getCategory());
-                t.setDni(teacher.getSurnames());
-                t.setId(teacher.getId());
-                t.setSurnames(teacher.getSurnames());
-            }
-        }
-
+        Teacher t = teachersRepository.findById(id).get();
+        t.setName(teacher.getName());
+        t.setDni(teacher.getSurnames());
+        t.setSurnames(teacher.getSurnames());
+        t.setCategory(teacher.getCategory());
+        teachersRepository.save(t);
     }
 
 
