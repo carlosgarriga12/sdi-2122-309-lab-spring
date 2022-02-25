@@ -16,6 +16,16 @@ public class User {
 
     private String password;
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    private String role;
+
     public String getPassword() {
         return password;
     }
@@ -34,10 +44,6 @@ public class User {
 
     @Transient
     private String passwordConfirm;
-
-
-
-    private String role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Mark> marks;
