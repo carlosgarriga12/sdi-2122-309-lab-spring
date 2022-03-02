@@ -101,7 +101,7 @@ public class UsersController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(Model model) {
+    public String login() {
         return "login";
     }
 
