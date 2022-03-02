@@ -4,6 +4,9 @@ import com.uniovi.notaneitor.entities.Mark;
 import com.uniovi.notaneitor.entities.User;
 import com.uniovi.notaneitor.repositories.MarksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -24,9 +27,8 @@ public class MarksService {
         this.httpSession = httpSession;
     }
 
-    public List<Mark> getMarks() {
-        List<Mark> marks = new LinkedList<>();
-        marksRepository.findAll().forEach(marks::add);
+    public Page<Mark> getMarks(Pageable pageable) {
+        Page<Mark> marks = marksRepository.findAll(pageable);
         return marks;
     }
 
@@ -60,25 +62,26 @@ public class MarksService {
         }
     }
 
-    public List<Mark> getMarksForUser(User user) {
-        List<Mark> marks = new ArrayList<Mark>();
+    public Page<Mark> getMarksForUser(User user, Pageable pageable) {
+        Page<Mark> marks = new PageImpl<Mark>(new LinkedList<Mark>());
         if (user.getRole().equals("ROLE_STUDENT")) {
-            marks = marksRepository.findAllByUser(user);
+            marks = marksRepository.findAllByUser(pageable, user);
         }
         if (user.getRole().equals("ROLE_PROFESSOR")) {
-            marks = getMarks();
+            marks = getMarks(pageable);
         }
         return marks;
     }
 
-    public List<Mark> searchMarksByDescriptionAndNameForUser(String searchText, User user) {
-        List<Mark> marks = new ArrayList<Mark>();
+    public Page<Mark> searchMarksByDescriptionAndNameForUser(Pageable pageable,
+                                                             String searchText, User user) {
+        Page<Mark> marks = new PageImpl<Mark>(new LinkedList<Mark>());
         searchText = "%"+searchText+"%";
         if (user.getRole().equals("ROLE_STUDENT")) {
-            marks = marksRepository.searchByDescriptionNameAndUser(searchText, user);
+            marks = marksRepository.searchByDescriptionNameAndUser(pageable, searchText, user);
         }
         if (user.getRole().equals("ROLE_PROFESSOR")) {
-            marks = marksRepository.searchByDescriptionAndName(searchText);
+            marks = marksRepository.searchByDescriptionAndName(pageable, searchText);
         }
         return marks;
     }
