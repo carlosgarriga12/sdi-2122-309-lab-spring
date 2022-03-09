@@ -5,7 +5,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
 public class PO_LoginView extends PO_View{
-    static public void fillForm(WebDriver driver, String dnip, String passwordp) {
+    static public void fillLoginForm(WebDriver driver, String dnip, String passwordp) {
         WebElement dni = driver.findElement(By.name("username"));
         dni.click();
         dni.clear();
