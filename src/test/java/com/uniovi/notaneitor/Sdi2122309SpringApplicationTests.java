@@ -136,4 +136,31 @@ class Sdi2122309SpringApplicationTests {
         Assertions.assertEquals(checkText , result.get(0).getText());
     }
 
+    //PRO6C. Prueba del formulario del registro. Dni corto
+    @Test
+    @Order(9)
+    public void PR06C() {
+        PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
+        PO_SignUpView.fillForm(driver, "99", "Jose", "Perez", "77777", "77777");
+
+        List<WebElement> result = PO_SignUpView.checkElementByKey(driver, "Error.signup.dni.length", PO_Properties.getSPANISH() );
+        //Comprobamos el error de Nombre corto de nombre corto .
+        String checkText = PO_HomeView.getP().getString("Error.signup.dni.length", PO_Properties.getSPANISH());
+        Assertions.assertEquals(checkText , result.get(0).getText());
+    }
+
+    //PRO6D. Prueba del formulario del registro. Apellido corto
+    @Test
+    @Order(10)
+    public void PR06D() {
+        PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
+        PO_SignUpView.fillForm(driver, "99999990B", "Jose", "P", "77777", "77777");
+
+        List<WebElement> result = PO_SignUpView.checkElementByKey(driver, "Error.signup.lastName.length", PO_Properties.getSPANISH() );
+        //Comprobamos el error de Nombre corto de nombre corto .
+        String checkText = PO_HomeView.getP().getString("Error.signup.lastName.length", PO_Properties.getSPANISH());
+        Assertions.assertEquals(checkText , result.get(0).getText());
+    }
+
+
 }
