@@ -1,9 +1,6 @@
 package com.uniovi.notaneitor;
 
-import com.uniovi.notaneitor.pageobjects.PO_HomeView;
-import com.uniovi.notaneitor.pageobjects.PO_Properties;
-import com.uniovi.notaneitor.pageobjects.PO_SignUpView;
-import com.uniovi.notaneitor.pageobjects.PO_View;
+import com.uniovi.notaneitor.pageobjects.*;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -101,6 +98,7 @@ class Sdi2122309SpringApplicationTests {
         PO_HomeView.clickOption(driver, "signup", "class", "btn btn-primary");
         //Rellenamos el formulario.
         PO_SignUpView.fillForm(driver, "77777778A", "Josefo", "Perez", "77777", "77777");
+
         //Comprobamos que entramos en la sección privada y nos nuestra el texto a buscar
         String checkText = "Notas del usuario";
         List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
@@ -160,6 +158,84 @@ class Sdi2122309SpringApplicationTests {
         //Comprobamos el error de Nombre corto de nombre corto .
         String checkText = PO_HomeView.getP().getString("Error.signup.lastName.length", PO_Properties.getSPANISH());
         Assertions.assertEquals(checkText , result.get(0).getText());
+    }
+
+    //PR07.Identificación válida del usuario 99999990A/123456
+    @Test
+    @Order(11)
+    public void PR07() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "99999990A", "123456");
+
+        //Comprobamos que entramos en la sección privada y nos nuestra el texto a buscar
+        String checkText = "Notas del usuario";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+    }
+
+    //PR08.Identificación válida del usuario 99999993D/123456
+    @Test
+    @Order(12)
+    public void PR08() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "99999993D", "123456");
+
+        //Comprobamos que entramos en la sección privada y nos nuestra el texto a buscar
+        String checkText = "Notas del usuario";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+    }
+
+
+    //PR08.Identificación válida del usuario 99999988F/123456
+    @Test
+    @Order(13)
+    public void PR09() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "99999988F", "123456");
+
+        //Comprobamos que entramos en la sección privada y nos nuestra el texto a buscar
+        String checkText = "Notas del usuario";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+    }
+
+    //PR14.Identificación válida del usuario 99999990A/123456
+    @Test
+    @Order(14)
+    public void PR10() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "99999990A", "123456");
+
+        //Comprobamos que entramos en la sección privada y nos nuestra el texto a buscar
+        String checkText = "Notas del usuario";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+    }
+
+    //PR15.Identificación válida del usuario 99999990A/123456
+    @Test
+    @Order(15)
+    public void PR11() {
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        PO_LoginView.fillForm(driver, "99999990A", "123456");
+
+        //Comprobamos que entramos en la sección privada y nos nuestra el texto a buscar
+        String checkText = "Notas del usuario";
+        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+        PO_HomeView.clickOption(driver, "logout", "class", "btn btn-primary");
+
+        checkText = "Identifícate";
+        result = PO_View.checkElementBy(driver, "text", checkText);
+        Assertions.assertEquals(checkText, result.get(0).getText());
+
+
     }
 
 
