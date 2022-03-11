@@ -13,6 +13,7 @@ import java.util.List;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+public
 class Sdi2122309SpringApplicationTests {
 
     static String PathFirefox = "C:\\Program Files\\Mozilla Firefox\\firefox.exe";
@@ -22,7 +23,7 @@ class Sdi2122309SpringApplicationTests {
     // static String Geckodriver = "/Users/USUARIO/selenium/geckodriver-v0.30.0-macos";
 
     // Común a Windows y a MACOSX
-    static WebDriver driver = getDriver(PathFirefox, Geckodriver);
+    public static WebDriver driver = getDriver(PathFirefox, Geckodriver);
     static String URL = "http://localhost:8090";
 
     public static WebDriver getDriver(String PathFirefox, String Geckodriver) {
@@ -242,13 +243,9 @@ class Sdi2122309SpringApplicationTests {
     @Test
     @Order(16)
     public void PR12() {
-        //Vamos al formulario de logueo.
-        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        //Rellenamos el formulario
-        PO_LoginView.fillLoginForm(driver, "99999990A", "123456");
-        //COmprobamos que entramos en la pagina privada de Alumno
-        String checkText = "Notas del usuario";
-        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        PO_PrivateView.clickAndLogin("99999990A", "123456");
+        List<WebElement> result = PO_PrivateView.checkPrivateZone
+                ( "Notas del usuario", "text");
 
         //Contamos el número de filas de notas
         List<WebElement> markList = SeleniumUtils.waitLoadElementsBy(driver, "free", "//tbody/tr",
@@ -264,20 +261,18 @@ class Sdi2122309SpringApplicationTests {
     @Test
     @Order(17)
     public void PR13() {
-        //Comprobamos que entramos en la pagina privada de Alumno
-        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        PO_LoginView.fillLoginForm(driver, "99999990A", "123456");
-
-        String checkText = "Notas del usuario";
-        List<WebElement> result = PO_View.checkElementBy(driver, "text", checkText);
+        PO_PrivateView.clickAndLogin("99999990A", "123456");
+        List<WebElement> result = PO_PrivateView.checkPrivateZone
+                ( "Notas del usuario", "text");
         //SeleniumUtils.esperarSegundos(driver, 1);
 
         //Contamos las notas
         By enlace = By.xpath("//td[contains(text(), 'Nota A2')]/following-sibling::*[2]");
         driver.findElement(enlace).click();
         //Esperamos por la ventana de detalle
-        checkText = "Detalles de la nota";
-        result = PO_View.checkElementBy(driver, "text", checkText);
+        String checkText = "Detalles de la nota";
+        result = PO_PrivateView.checkPrivateZone
+                ( checkText, "text");
         Assertions.assertEquals(checkText,result.get(0).getText());
 
         //Ahora nos desconectamos comprobamas que aparece el menu de registrarse
@@ -289,18 +284,18 @@ class Sdi2122309SpringApplicationTests {
     @Test
     @Order(18)
     public void PR14() {
-        //Vamos al formulario de login.
-        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        PO_LoginView.fillLoginForm(driver, "99999993D", "123456");
+        PO_PrivateView.clickAndLogin("99999993D", "123456");
+
         //Comprobamos que entramos en la pagina privada del Profesor
-        PO_View.checkElementBy(driver, "text", "99999993D");
+        PO_PrivateView.checkPrivateZone("99999993D", "text");
 
         //Pinchamos en la opción de menú de Notas: //li[contains(@id, 'marks-menu')]/a
-        List<WebElement> elements = PO_View.checkElementBy(driver, "free",
-                "//li[contains(@id, 'marks-menu')]/a");
+        List<WebElement> elements = PO_PrivateView.checkPrivateZone
+                ("//li[contains(@id, 'marks-menu')]/a", "free");
+
         elements.get(0).click();
         //Esperamos a que aparezca la opción de añadir nota: //a[contains(@href, 'mark/add')]
-        elements = PO_View.checkElementBy(driver, "free", "//a[contains(@href, 'mark/add')]");
+        elements = PO_PrivateView.checkPrivateZone("//a[contains(@href, 'mark/add')]", "free");
         //Pinchamos en agregar Nota.
         elements.get(0).click();
         //Ahora vamos a rellenar la nota. //option[contains(@value, '4')]
@@ -308,11 +303,11 @@ class Sdi2122309SpringApplicationTests {
         PO_PrivateView.fillFormAddMark(driver, 3, checkText, "8");
 
         //Esperamos a que se muestren los enlaces de paginación de la lista de notas
-        elements = PO_View.checkElementBy(driver, "free", "//a[contains(@class, 'page-link')]");
+        elements = PO_PrivateView.checkPrivateZone("//a[contains(@class, 'page-link')]","free");
         //Nos vamos a la última página
         elements.get(3).click();
         //Comprobamos que aparece la nota en la página
-        elements = PO_View.checkElementBy(driver, "text", checkText);
+        elements = PO_PrivateView.checkPrivateZone(checkText, "text");
         Assertions.assertEquals(checkText, elements.get(0).getText());
 
         //Ahora nos desconectamos y comprobamos que aparece el menú de registrarse
@@ -323,9 +318,9 @@ class Sdi2122309SpringApplicationTests {
     @Test
     @Order(19)
     public void PR15() {
-        //Vamos al formulario de login.
-        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
-        PO_LoginView.fillLoginForm(driver, "99999993D", "123456");
+        //Vamos al formulario de login
+        PO_PrivateView.clickAndLogin("99999993D", "123456");
+
         //Comprobamos que entramos en la página privada del Profesor
         PO_View.checkElementBy(driver, "text", "99999993D");
         //Pinchamos en la opción de menú de Notas: //li[contains(@id, 'marks-menu')]/a

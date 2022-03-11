@@ -6,6 +6,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
+import java.util.List;
+
+import static com.uniovi.notaneitor.Sdi2122309SpringApplicationTests.driver;
+
 public class PO_PrivateView extends PO_NavView{
     static public void fillFormAddMark(WebDriver driver, int userOrder, String descriptionp, String scorep) {
         //Esperamos 5 segundo a que carge el DOM porque en algunos equipos falla
@@ -22,5 +26,20 @@ public class PO_PrivateView extends PO_NavView{
         score.sendKeys(scorep);
         By boton = By.className("btn");
         driver.findElement(boton).click();
+    }
+
+    static public List<WebElement> checkPrivateZone(String textToCheck, String type) {
+        //COmprobamos que entramos en la pagina privada
+        String checkText = textToCheck;
+        List<WebElement> result = PO_View.checkElementBy(driver, type, checkText);
+
+        return result;
+    }
+
+    static public void clickAndLogin(String user, String password) {
+        //Vamos al formulario de logueo.
+        PO_HomeView.clickOption(driver, "login", "class", "btn btn-primary");
+        //Rellenamos el formulario
+        PO_LoginView.fillLoginForm(driver, user, password);
     }
 }
